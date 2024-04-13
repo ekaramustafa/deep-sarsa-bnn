@@ -56,5 +56,6 @@ class FunctionApproxTester:
         plt.grid(True)
         plt.show()
         print("=======================")
+        print(f"Model : {module.layer_name}")
         print("Training&Testing Ends")
         print("========================\n")
