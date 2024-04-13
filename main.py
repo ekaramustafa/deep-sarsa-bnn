@@ -1,0 +1,25 @@
+
+from networks.bnn import VariationalBayesianNeuralNetwork
+from layers.alter_vbl import AlterVBL
+from layers.adin_vbl import AdinVBL
+from test import FunctionApproxTester
+
+import torch 
+def true_function(x):
+    return torch.sin(x) + 0.5 * torch.cos(2 * x)
+
+def main():
+    input_dim = 1
+    hidden_dim = 128
+    output_dim = 1
+    adin_model = VariationalBayesianNeuralNetwork(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layerClass=AdinVBL)
+    alter_model = VariationalBayesianNeuralNetwork(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layerClass=AlterVBL)
+    tester = FunctionApproxTester(42)
+    true_func = true_function
+    
+    tester.test(adin_model,true_function=true_func,num_epochs=800)
+    # tester.test(alter_model,true_function=true_func,num_epochs=800)
+
+
+if __name__ == '__main__':
+    main()
