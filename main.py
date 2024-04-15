@@ -1,14 +1,25 @@
+import sys
+import os
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+import numpy as np
 from networks.bnn import VariationalBayesianNeuralNetwork
 from layers.alter_vbl import AlterVBL
 from layers.adin_vbl import AdinVBL
 from test import FunctionApproxTester
+import gym
+
 
 import torch 
 def true_function(x):
     return torch.sin(x) + 0.5 * torch.cos(2 * x)
 
 def main():
+    linear_test()
+    pass
+
+
+def linear_test():
     input_dim = 1
     hidden_dim = 128
     output_dim = 1
@@ -19,7 +30,6 @@ def main():
     
     tester.test(adin_model,true_function=true_func,num_epochs=800)
     # tester.test(alter_model,true_function=true_func,num_epochs=800)
-
 
 if __name__ == '__main__':
     main()

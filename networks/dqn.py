@@ -2,6 +2,7 @@ import torch.nn as nn
 import torch.functional as F
 from base import QNetwork  
 
+# Deep Q Network with Lineary Layers
 class DQN(QNetwork):
 
     def __init__(self, n_observations, n_actions,n_hidden=128):
