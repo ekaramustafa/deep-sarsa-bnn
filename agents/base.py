@@ -25,7 +25,7 @@ class Agent():
         self.memory = ReplayMemory(10000)
         self.steps_done = 0
         self.episode_durations = []
-        self.policy_net = QNetwork(self.observation_space.n,self.env.action_space.n,n_hidden=128).to(device) 
+        self.policy_net = QNetwork(self.env.action_space.n).to(Agent.device) 
     
     def init_message(self):
         print("Agent: {} initialized, Device : {}".format(self.name, self.device))

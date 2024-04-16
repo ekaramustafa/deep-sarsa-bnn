@@ -1,12 +1,12 @@
 import torch.nn as nn
 import torch.functional as F
-from base import QNetwork  
+from networks.base import QNetwork  
 
 # Deep Q Network with Lineary Layers
-class DQN_Linear(QNetwork):
+class DQNLinear(QNetwork):
 
     def __init__(self, n_observations, n_actions,n_hidden=128):
-        super(DQN_Linear, self).__init__(n_actions=n_actions)
+        super(DQNLinear, self).__init__(n_actions=n_actions)
         self.layer1 = nn.Linear(n_observations, n_hidden)
         self.layer2 = nn.Linear(n_hidden, n_hidden)
         self.layer3 = nn.Linear(n_hidden, n_actions)
@@ -32,7 +32,7 @@ ref: https://arxiv.org/pdf/1312.5602.pdf
 
 class DQNConv2d(QNetwork):
 
-    def __init__(self, stack_dim, n_actions,n_hidden=128):
+    def __init__(self, stack_dim, n_actions):
         super(DQNConv2d, self).__init__(n_actions=n_actions)
         self.network = nn.Sequential(
             #cnn

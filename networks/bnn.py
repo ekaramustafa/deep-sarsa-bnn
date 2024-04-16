@@ -3,9 +3,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from networks.base import QNetwork 
 
-class VariationalBayesianNeuralNetwork(QNetwork):
+class VBLinearNeuralNetwork(QNetwork):
     def __init__(self, layerClass, input_dim, hidden_dim, output_dim, prior_log_sig2=0.4,bias=True):
-        super(VariationalBayesianNeuralNetwork, self).__init__(n_observations=input_dim, n_actions=output_dim,n_hidden=hidden_dim)
+        super(VBLinearNeuralNetwork, self).__init__(n_actions=output_dim)
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
@@ -21,3 +21,5 @@ class VariationalBayesianNeuralNetwork(QNetwork):
         x = F.relu(self.blinear2(x))
         x = self.blinear3(x)
         return x
+
+    
