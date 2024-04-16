@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 class AdinVBL(VBLinear):
     name= "Adin Variational Bayesian Linear Layers"
-    def __init__(self,in_features,out_features,bias,prior_log_sig2):
+    def __init__(self,in_features : int,out_features : int,bias : bool = True,prior_log_sig2 = 0.4):
         super(AdinVBL, self).__init__(in_features=in_features,out_features=out_features,bias=bias,prior_log_sig2=prior_log_sig2)
     #uses local reparametrization trick to reduce variance
 

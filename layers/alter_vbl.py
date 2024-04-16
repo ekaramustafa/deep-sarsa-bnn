@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 class AlterVBL(VBLinear):
     name= "Alter Variational Bayesian Linear Layers"
-    def __init__(self,in_features: int, out_features: int, bias: bool = True, prior_log_sig2 =0.4):
+    def __init__(self,in_features: int, out_features: int, bias: bool = True, prior_log_sig2 = 0.4):
         super(AlterVBL, self).__init__(in_features=in_features,out_features=out_features,bias=bias,prior_log_sig2=prior_log_sig2)
 
     #directly samples from the parameters without local reparametrization trick
