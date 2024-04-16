@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 from torch.nn.parameter import Parameter
 from torch.nn.modules.utils import _pair
-from vbconv_base import VBConv2d
+from layers.vbconv_base import VBConv2d
 
 class AlterVBConv2d(VBConv2d):
     name= "Alter Variational Bayesian 2D Convolutional Layers"

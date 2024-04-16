@@ -2,7 +2,6 @@ import numpy as np
 from networks.bnn import DQN_VBLinear
 from layers.alter_vbl import AlterVBL
 from layers.adin_vbl import AdinVBL
-from layers.adin_vbconv import AdinVBConv2d
 from layers.alter_vbconv import AlterVBConv2d
 from test import FunctionApproxTester
 from networks.bnn import DQN_VBLinear, DQN_VBConv2D
