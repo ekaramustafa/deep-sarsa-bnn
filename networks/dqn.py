@@ -30,10 +30,10 @@ Playing Atari with Deep Reinforcement Learning
 ref: https://arxiv.org/pdf/1312.5602.pdf
 """
 
-class DQNConv2d(QNetwork):
+class DQN_Conv2D(QNetwork):
 
     def __init__(self, stack_dim, n_actions):
-        super(DQNConv2d, self).__init__(n_actions=n_actions)
+        super(DQN_Conv2D, self).__init__(n_actions=n_actions)
         self.network = nn.Sequential(
             #cnn
             nn.Conv2d(stack_dim, 32, 8, stride=4),

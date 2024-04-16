@@ -7,16 +7,16 @@ import torch.nn as nn
 from torch.nn.parameter import Parameter
 from torch.nn.modules.utils import _pair
 
-class VariationalBayesianLinear(nn.Module):
+class VBLinear(nn.Module):
     __constants__ = ['in_features', 'out_features']
     in_features: int
     out_features: int
     weight: torch.Tensor
-    name= "BaseVariationalBayesianLinear"
+    name= "Base Variational Bayesian Linear"
 
     def __init__(self, in_features: int, out_features: int, bias: bool = True,
                  prior_log_sig2 =0.4) -> None:
-        super(VariationalBayesianLinear, self).__init__()
+        super(VBLinear, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.has_bias = bias

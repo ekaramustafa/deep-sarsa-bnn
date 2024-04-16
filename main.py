@@ -1,9 +1,9 @@
 import numpy as np
-from networks.bnn import VBLinearNeuralNetwork
+from networks.bnn import DQN_VBLinear
 from layers.alter_vbl import AlterVBL
 from layers.adin_vbl import AdinVBL
 from test import FunctionApproxTester
-from networks.dqn import DQNLinear, DQNConv2d
+from networks.dqn import DQNLinear, DQN_Conv2D
 
 import torch 
 def true_function(x):
@@ -18,8 +18,8 @@ def linear_test():
     input_dim = 1
     hidden_dim = 128
     output_dim = 1
-    adin_model = VBLinearNeuralNetwork(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layerClass=AdinVBL)
-    alter_model = VBLinearNeuralNetwork(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layerClass=AlterVBL)
+    adin_model = DQN_VBLinear(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layer_class=AdinVBL)
+    alter_model = DQN_VBLinear(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layer_class=AlterVBL)
     tester = FunctionApproxTester(42)
     true_func = true_function
     

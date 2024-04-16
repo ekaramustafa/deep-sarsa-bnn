@@ -3,7 +3,7 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 import torch.optim as optim
 import numpy as np
-from layers.vbl_base import VariationalBayesianLinear  
+from layers.vbl_base import VBLinear  
 class FunctionApproxTester:
  
     def __init__(self, seed=42):
@@ -28,7 +28,7 @@ class FunctionApproxTester:
 
             kl_loss = 0
             for layer in module.children():
-                if isinstance(layer, VariationalBayesianLinear):
+                if isinstance(layer, VBLinear):
                     kl, n = layer.kl_loss()
                     kl_loss += kl / n
 

@@ -1,11 +1,11 @@
-from layers.vbl_base import VariationalBayesianLinear
+from layers.vbl_base import VBLinear
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-class AlterVBL(VariationalBayesianLinear):
-    name= "AlterVariationalBayesianLinear"
+class AlterVBL(VBLinear):
+    name= "Alter Variational Bayesian Linear"
     def __init__(self,in_features: int, out_features: int, bias: bool = True, prior_log_sig2 =0.4):
         super(AlterVBL, self).__init__(in_features=in_features,out_features=out_features,bias=bias,prior_log_sig2=prior_log_sig2)
 
