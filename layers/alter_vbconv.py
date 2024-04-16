@@ -5,7 +5,6 @@ import torch.nn.functional as F
 import torch.nn as nn
 from torch.nn.parameter import Parameter
 from torch.nn.modules.utils import _pair
-
 from vbconv_base import VBConv2d
 
 class AlterVBConv2d(VBConv2d):
@@ -13,7 +12,7 @@ class AlterVBConv2d(VBConv2d):
 
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True, prior_log_sig2=0.4):
         super(AlterVBConv2d, self).__init__(in_channels, out_channels, kernel_size, stride, padding, dilation, groups, bias, prior_log_sig2)
-        
+
 
     def forward(self, input):
         if self.training:

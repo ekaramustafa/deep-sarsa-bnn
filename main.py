@@ -3,6 +3,7 @@ from networks.bnn import DQN_VBLinear
 from layers.alter_vbl import AlterVBL
 from layers.adin_vbl import AdinVBL
 from layers.adin_vbconv import AdinVBConv2d
+from layers.alter_vbconv import AlterVBConv2d
 from test import FunctionApproxTester
 from networks.bnn import DQN_VBLinear, DQN_VBConv2D
 
@@ -12,7 +13,7 @@ def true_function(x):
 
 def main():
     network = DQN_VBLinear(layer_class=AdinVBL,input_dim=1,hidden_dim=128,output_dim=1)
-    network2 = DQN_VBConv2D(linear_layer_class=AdinVBL,conv_layer_class=AdinVBConv2d,n_actions=4)
+    network2 = DQN_VBConv2D(linear_layer_class=AlterVBL,conv_layer_class=AlterVBConv2d,n_actions=4)
     print("Success")
     pass
 
