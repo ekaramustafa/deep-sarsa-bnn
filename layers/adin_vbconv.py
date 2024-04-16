@@ -1,9 +1,9 @@
 import torch
 
-from vbconv_base import VBConv2d
+from layers.vbconv_base import VBConv2d
 
 class AdinVBConv2d(VBConv2d):
-    name = "Adin Variational Bayesian 2D Convolutional Layer"
+    name = "Adin Variational Bayesian 2D Convolutional Layers"
 
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, 
                  padding=0, dilation=1, groups=1, bias=True, prior_log_sig2=0.4):

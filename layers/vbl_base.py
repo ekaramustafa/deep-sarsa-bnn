@@ -12,7 +12,7 @@ class VBLinear(nn.Module):
     in_features: int
     out_features: int
     weight: torch.Tensor
-    name= "Base Variational Bayesian Linear"
+    name= "Base Variational Bayesian Linear Layers"
 
     def __init__(self, in_features: int, out_features: int, bias: bool = True,
                  prior_log_sig2 =0.4) -> None:

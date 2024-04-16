@@ -6,8 +6,15 @@ import torch.nn as nn
 from torch.nn.parameter import Parameter
 from torch.nn.modules.utils import _pair
 
-class AlterVBConv2d(nn.Module):
-    name= "Alter Variational Bayesian 2D Convolutional Layer"
+from vbconv_base import VBConv2d
+
+class AlterVBConv2d(VBConv2d):
+    name= "Alter Variational Bayesian 2D Convolutional Layers"
+
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, padding=0, dilation=1, groups=1, bias=True, prior_log_sig2=0.4):
+        super(AlterVBConv2d, self).__init__(in_channels, out_channels, kernel_size, stride, padding, dilation, groups, bias, prior_log_sig2)
+        
+
     def forward(self, input):
         if self.training:
             W_eps = torch.empty_like(self.W_mu).normal_(0, 1).to(self.device)

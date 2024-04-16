@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from networks.base import QNetwork 
 
 class DQN_VBLinear(QNetwork):
+    name = "DQN with Variational Bayesian Linear Layers"
     def __init__(self, layer_class, input_dim, hidden_dim, output_dim, prior_log_sig2=0.4,bias=True):
         super(DQN_VBLinear, self).__init__(n_actions=output_dim)
         self.input_dim = input_dim
@@ -22,12 +23,28 @@ class DQN_VBLinear(QNetwork):
         x = self.blinear3(x)
         return x
 
+
+"""
+The input to the neural
+network consists is an 84 x 84 x 4 image produced by φ. The first hidden layer convolves 16 8 x 8
+filters with stride 4 with the input image and applies a rectifier nonlinearity [10, 18]. The second
+hidden layer convolves 32 4 x 4 filters with stride 2, again followed by a rectifier nonlinearity. 
+The final hidden layer is fully-connected and consists of 256 rectifier units. 
+The output layer is a fully-connected linear layer with a single output for each valid action. 
+The number of valid actions varied between 4 and 18 on the games we considered.
+
+Playing Atari with Deep Reinforcement Learning
+ref: https://arxiv.org/pdf/1312.5602.pdf
+"""
+
 class DQN_VBConv2D(QNetwork):
-    def __init__(self, n_stack, n_actions, conv_layer_class, linear_layer_class):
+    name = "DQN with Convolutional Layers"
+    def __init__(self, n_actions, conv_layer_class, linear_layer_class):
        super().__init__(n_actions=n_actions)
+       DQN_VBConv2D.name = f"DQN with {conv_layer_class.name} and {linear_layer_class.name} Layers"
        self.network = nn.Sequential(
             #cnn
-            conv_layer_class(n_stack, 32, kernel_size=(8,8), stride=4),
+            conv_layer_class(4, 32, kernel_size=(8,8), stride=4),
             nn.ReLU(),
             conv_layer_class(32, 64, kernel_size=(4,4), stride=2),
             nn.ReLU(),

@@ -13,7 +13,7 @@ class VBConv2d(nn.Module):
     out_channels: int
     kernel_size: _pair
     weight: torch.Tensor
-    name = "Variational Bayesian 2D Convolutional Layer"
+    name = "Variational Bayesian 2D Convolutional Layers"
 
     def __init__(self, in_channels: int, out_channels: int, kernel_size: _pair, stride: _pair = 1,
                  padding: _pair = 0, dilation: _pair = 1, groups: int = 1, bias: bool = True,

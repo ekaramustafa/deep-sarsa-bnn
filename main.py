@@ -2,14 +2,17 @@ import numpy as np
 from networks.bnn import DQN_VBLinear
 from layers.alter_vbl import AlterVBL
 from layers.adin_vbl import AdinVBL
+from layers.adin_vbconv import AdinVBConv2d
 from test import FunctionApproxTester
-from networks.dqn import DQNLinear, DQN_Conv2D
+from networks.bnn import DQN_VBLinear, DQN_VBConv2D
 
 import torch 
 def true_function(x):
     return torch.sin(x) + 0.5 * torch.cos(2 * x)
 
 def main():
+    network = DQN_VBLinear(layer_class=AdinVBL,input_dim=1,hidden_dim=128,output_dim=1)
+    network2 = DQN_VBConv2D(linear_layer_class=AdinVBL,conv_layer_class=AdinVBConv2d,n_actions=4)
     print("Success")
     pass
 
