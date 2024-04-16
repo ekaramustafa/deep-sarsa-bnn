@@ -42,8 +42,7 @@ class VBLinear(nn.Module):
             init.constant_(self.bias_log_sig2, -10)
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
-     
-        return
+        pass
       
     def get_mean_var(self, input: torch.Tensor) -> torch.Tensor:
         mu = F.linear(input, self.weight_mu, self.bias_mu)

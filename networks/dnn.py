@@ -2,11 +2,13 @@ import torch.nn as nn
 import torch.functional as F
 from networks.base import QNetwork  
 
-# Deep Q Network with Lineary Layers
-class DQNLinear(QNetwork):
+# Deterministic Q-Networks
+
+# Deep Q Network with Deterministic Linear Layers
+class DQN_DLinear(QNetwork):
 
     def __init__(self, n_observations, n_actions,n_hidden=128):
-        super(DQNLinear, self).__init__(n_actions=n_actions)
+        super(DQN_DLinear, self).__init__(n_actions=n_actions)
         self.layer1 = nn.Linear(n_observations, n_hidden)
         self.layer2 = nn.Linear(n_hidden, n_hidden)
         self.layer3 = nn.Linear(n_hidden, n_actions)
@@ -29,7 +31,7 @@ The number of valid actions varied between 4 and 18 on the games we considered.
 Playing Atari with Deep Reinforcement Learning
 ref: https://arxiv.org/pdf/1312.5602.pdf
 """
-
+# Deep Q Network with Deterministic 2D Convoluational Layers 
 class DQN_Conv2D(QNetwork):
 
     def __init__(self, stack_dim, n_actions):
