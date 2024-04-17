@@ -1,6 +1,7 @@
 import numpy as np
 import gymnasium as gym
 from utils.enviroment_wrapper import EnvironmentWrapper
+from layers.adin_vb import AdinVBL, AdinVBConv2d
 from agents.dql import DQLAgent
 
 
@@ -16,8 +17,8 @@ def main():
     seed = 42
     env = gym.make("BreakoutNoFrameskip-v4")
     env = EnvironmentWrapper.wrap_environment(env)
-    agent = DQLAgent(env,is_deterministic=True)
-    agent.train(num_episodes=2)
+    agent = DQLAgent(env,is_deterministic=False,linear_layer_class=AdinVBL,conv_layer_class=AdinVBConv2d)
+    agent.train(num_episodes=1000)
 
 
     pass

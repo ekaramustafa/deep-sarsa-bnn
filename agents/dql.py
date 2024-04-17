@@ -67,9 +67,7 @@ class DQLAgent(Agent):
         for i_episode in range(num_episodes):
             # Initialize the environment and get its state
             state, info = self.env.reset()
-            state = torch.tensor(state, dtype=torch.float32, device=Agent.device)
-            if self.is_deterministic:
-                state = state.unsqueeze(0)
+            state = torch.tensor(state, dtype=torch.float32, device=Agent.device).unsqueeze(0)
             total_reward = 0
             for t in count():
                 action = self.select_action(state)
@@ -80,9 +78,7 @@ class DQLAgent(Agent):
                 if done:
                     next_state = None
                 else:
-                    next_state = torch.tensor(observation, dtype=torch.float32, device=Agent.device)
-                    if self.is_deterministic:
-                        next_state = next_state.unsqueeze(0)
+                    next_state = torch.tensor(observation, dtype=torch.float32, device=Agent.device).unsqueeze(0)
 
                 # Store the transition in memory
                 self.memory.push(state, action, next_state, reward)
