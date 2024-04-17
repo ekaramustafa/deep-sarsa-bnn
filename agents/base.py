@@ -32,8 +32,7 @@ class Agent():
 
     def select_action(self,state):
         sample = random.random()
-        eps_threshold = self.EPS_END + (self.EPS_START - self.EPS_END) * \
-            math.exp(-1. * self.steps_done / self.EPS_DECAY)
+        eps_threshold = self.get_eps()
         self.steps_done += 1
         if sample > eps_threshold:
             with torch.no_grad():
@@ -41,6 +40,10 @@ class Agent():
         else:
             return torch.tensor([[self.env.action_space.sample()]], device=Agent.device, dtype=torch.long)
         
+    def get_eps(self):
+        eps_threshold = self.EPS_END + (self.EPS_START - self.EPS_END) * \
+            math.exp(-1. * self.steps_done / self.EPS_DECAY)
+        return eps_threshold
     def plot_durations(self,show_result=False):
         plt.figure(1)
         durations_t = torch.tensor(self.episode_durations, dtype=torch.float)
