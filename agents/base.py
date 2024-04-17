@@ -25,7 +25,6 @@ class Agent():
         self.memory = ReplayMemory(10000)
         self.steps_done = 0
         self.episode_durations = []
-        self.policy_net = QNetwork(self.env.action_space.n).to(Agent.device) 
     
     def init_message(self):
         print("Agent: {} initialized, Device : {}".format(self.name, self.device))
@@ -45,7 +44,7 @@ class Agent():
         plt.figure(1)
         durations_t = torch.tensor(self.episode_durations, dtype=torch.float)
         if show_result:
-            plt.title('Result')
+            plt.title(f'Result {self.name}, Gamma: {Agent.GAMMA}, TAU: {Agent.TAU}, LR: {Agent.LR}, BATCH_SIZE: {Agent.BATCH_SIZE}')
         else:
             plt.clf()
             plt.title('Training...')
@@ -65,4 +64,10 @@ class Agent():
                 display.clear_output(wait=True)
             else:
                 display.display(plt.gcf())
+
+    def optimize_model(self):
+        pass
+
+    def train(self, num_episodes=1000):
+        pass
         

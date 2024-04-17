@@ -1,6 +1,6 @@
 import random
 from collections import deque
-from transition import Transition
+from utils.transition import Transition
 
 class ReplayMemory(object):
 

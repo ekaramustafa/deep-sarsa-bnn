@@ -4,29 +4,27 @@ from layers.alter_vb import AlterVBL, AlterVBConv2d
 from layers.adin_vb import AdinVBL, AdinVBConv2d
 from test import FunctionApproxTester
 from networks.bnn import DQN_VBLinear, DQN_VBConv2D
+from gymnasium.wrappers import AtariPreprocessing, FrameStack,RecordVideo
+import gymnasium as gym
+from agents.dql import DQLAgent
 
 import torch 
-def true_function(x):
-    return torch.sin(x) + 0.5 * torch.cos(2 * x)
+
+
+def make_env():
+
+
+    pass
 
 def main():
-    network = DQN_VBLinear(layer_class=AdinVBL,input_dim=1,hidden_dim=128,output_dim=1)
-    network2 = DQN_VBConv2D(linear_layer_class=AlterVBL,conv_layer_class=AlterVBConv2d,n_actions=4)
-    print("Success")
+    seed = 42
+    env = gym.make("BreakoutNoFrameskip-v4")
+    agent = DQLAgent(env,is_deterministic=True)
+    
+
     pass
 
 
-def linear_test():
-    input_dim = 1
-    hidden_dim = 128
-    output_dim = 1
-    adin_model = DQN_VBLinear(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layer_class=AdinVBL)
-    alter_model = DQN_VBLinear(input_dim=input_dim,hidden_dim=hidden_dim,output_dim=output_dim,layer_class=AlterVBL)
-    tester = FunctionApproxTester(42)
-    true_func = true_function
-    
-    tester.test(adin_model,true_function=true_func,num_epochs=800)
-    # tester.test(alter_model,true_function=true_func,num_epochs=800)
 
 if __name__ == '__main__':
     main()
