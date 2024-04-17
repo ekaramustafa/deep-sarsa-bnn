@@ -19,15 +19,16 @@ class Agent():
     plt.ion()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    def __init__(self, env):
+    def __init__(self, env, is_deterministic):
         self.env = env
         self.name = "Base Agent"
         self.memory = ReplayMemory(10000)
         self.steps_done = 0
         self.episode_durations = []
+        self.is_deterministic = is_deterministic
     
     def init_message(self):
-        print("Agent: {} initialized, Device : {}".format(self.name, self.device))
+        print("Agent: {} initialized, Device : {}".format(self.name, Agent.device))
 
     def select_action(self,state):
         sample = random.random()
@@ -38,7 +39,7 @@ class Agent():
             with torch.no_grad():
                 return self.policy_net(state).max(1)[1].view(1, 1)
         else:
-            return torch.tensor([random.randrange(self.env.action_space.n)], device=self.device, dtype=torch.long)
+            return torch.tensor([[self.env.action_space.sample()]], device=Agent.device, dtype=torch.long)
         
     def plot_durations(self,show_result=False):
         plt.figure(1)
