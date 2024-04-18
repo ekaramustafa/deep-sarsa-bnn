@@ -20,9 +20,7 @@ def main():
     agent = DESAgent(env,is_deterministic=False,linear_layer_class=AdinVBL,conv_layer_class=AdinVBConv2d)
     agent.train(num_episodes=1)
 
-
     pass
-
 
 
 if __name__ == '__main__':

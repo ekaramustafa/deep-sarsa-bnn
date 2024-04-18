@@ -87,6 +87,7 @@ class DQLAgent(Agent):
 
                 self.optimize_model()
 
+                #Soft update of target network
                 target_net_state_dict = self.target_net.state_dict()
                 policy_net_state_dict = self.policy_net.state_dict()
                 for key in policy_net_state_dict:
@@ -102,7 +103,7 @@ class DQLAgent(Agent):
         self.plot_durations(show_result=True)
         plt.ioff()
         plt.show()
-        return episode_rewards
+        self.plot_performance(episode_rewards)
 
     def evaluate(self):
         pass

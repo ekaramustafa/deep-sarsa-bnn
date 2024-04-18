@@ -1,6 +1,7 @@
 import math
 import random
 import torch
+import numpy as np
 import matplotlib.pyplot as plt
 from utils.replay_memory import ReplayMemory
 from networks.base import QNetwork
@@ -69,9 +70,16 @@ class Agent():
             else:
                 display.display(plt.gcf())
 
-    def optimize_model(self):
-        pass
 
-    def train(self, num_episodes=1000):
-        pass
+    def plot_performance(self,episode_rewards):
+        x_axis = np.arange(0,len(episode_rewards))
+        plt.plot(x_axis,np.array(episode_rewards),color="r",linestyle="-",marker="o",markersize=1)
+        title = f"{self.name}"
+        plt.title(title)
+        plt.xlabel("Episode")
+        plt.ylabel("Rewards")
+        plt.legend()
+        path = f"results/{self.name}"
+        plt.savefig(path)
+        plt.show()
         

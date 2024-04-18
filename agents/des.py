@@ -15,7 +15,7 @@ class DESAgent(Agent):
 
     def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None):
         super(DESAgent, self).__init__(env,is_deterministic=is_deterministic)
-        self.name = "Deep Sarsa Agent"
+        self.name = "Deep Expected Sarsa Agent"
         self.init_message()
         if(is_deterministic):
             self.name += " Deterministic"
@@ -44,20 +44,19 @@ class DESAgent(Agent):
         reward_batch = torch.cat(batch.reward)
 
         state_action_values = self.policy_net(state_batch).gather(1, action_batch)
-        next_state_action_values = torch.zeros(Agent.BATCH_SIZE, device=Agent.device)
-
+        new_state_action_values = torch.zeros(Agent.BATCH_SIZE, device=Agent.device)
         with torch.no_grad():
-            next_state_actions = self.policy_net(non_final_next_states)
+            next_state_action_values = self.policy_net(non_final_next_states)
+            max_indices = torch.argmax(next_state_action_values,dim=1)
+            max_mask = torch.zeros_like(next_state_action_values, dtype=torch.bool)
+            max_mask.scatter_(1, max_indices.unsqueeze(1), 1)
+            max_values = torch.where(max_mask, next_state_action_values, torch.zeros_like(next_state_action_values))
+            non_max_values = torch.where(max_mask, torch.zeros_like(next_state_action_values), next_state_action_values)
             eps_threshold = self.get_eps()
-            sample = random.random()
-            if sample < eps_threshold:
-                next_actions = torch.tensor([random.randint(0, self.env.action_space.n - 1) for _ in range(len(non_final_next_states))], device=Agent.device)
-            else:
-                next_actions = torch.argmax(next_state_actions, dim=1)
+            new_state_action_values[non_final_mask] = torch.sum(max_values * (1-eps_threshold) + (eps_threshold * non_max_values) / self.env.action_space.n)
 
-        next_state_action_values[non_final_mask] = next_state_actions.gather(1, next_actions.unsqueeze(1)).squeeze(1)
-            # Compute the expected Q values
-        expected_state_action_values = (next_state_action_values * Agent.GAMMA) + reward_batch
+        # Compute the expected Q values
+        expected_state_action_values = (new_state_action_values * Agent.GAMMA) + reward_batch
 
         # Compute Huber loss
         criterion = nn.SmoothL1Loss()
@@ -105,7 +104,7 @@ class DESAgent(Agent):
         self.plot_durations(show_result=True)
         plt.ioff()
         plt.show()
-        return episode_rewards
+        self.plot_performance(episode_rewards)
 
     def evaluate(self):
         pass
