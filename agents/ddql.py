@@ -7,7 +7,7 @@ from agents.base import Agent
 from networks.dnn import DQN_Conv2D
 from networks.bnn import DQN_VBConv2D
 from utils.transition import Transition
-
+#not implemented yet
 class DDQLAgent(Agent):
 
     def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None):

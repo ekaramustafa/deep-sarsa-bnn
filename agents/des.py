@@ -31,9 +31,10 @@ class DESAgent(Agent):
     def optimize_model(self):
         if len(self.memory) < Agent.BATCH_SIZE:
             return
-        transitions = self.memory.sample(Agent.BATCH_SIZE)
+        transitions = self.memory.sample_all()
 
         batch = Transition(*zip(*transitions))
+        self.memory.reset_memory()  
 
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
                                             batch.next_state)), device=Agent.device, dtype=torch.bool)
@@ -51,9 +52,10 @@ class DESAgent(Agent):
             max_mask = torch.zeros_like(next_state_action_values, dtype=torch.bool)
             max_mask.scatter_(1, max_indices.unsqueeze(1), 1)
             max_values = torch.where(max_mask, next_state_action_values, torch.zeros_like(next_state_action_values))
-            non_max_values = torch.where(max_mask, torch.zeros_like(next_state_action_values), next_state_action_values)
+            #non_max_values = torch.where(max_mask, torch.zeros_like(next_state_action_values), next_state_action_values)
+            non_max_values = next_state_action_values
             eps_threshold = self.get_eps()
-            new_state_action_values[non_final_mask] = torch.sum(max_values * (1-eps_threshold) + (eps_threshold * non_max_values) / self.env.action_space.n)
+            new_state_action_values[non_final_mask] = torch.sum(max_values * (1-eps_threshold) + (eps_threshold * non_max_values) / (self.env.action_space.n))
 
         # Compute the expected Q values
         expected_state_action_values = (new_state_action_values * Agent.GAMMA) + reward_batch

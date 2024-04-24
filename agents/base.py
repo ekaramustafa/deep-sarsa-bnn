@@ -60,7 +60,7 @@ class Agent():
         if len(durations_t) >= 100:
             means = durations_t.unfold(0, 100, 1).mean(1).view(-1)
             means = torch.cat((torch.zeros(99), means))
-            plt.plot(means.numpy())
+            plt.plot(means.numpy(),block=False)
 
         plt.pause(0.001)  # pause a bit so that plots are updated
         if Agent.is_ipython:
@@ -81,5 +81,5 @@ class Agent():
         plt.legend()
         path = f"results/{self.name}"
         plt.savefig(path)
-        plt.show()
+        plt.show(block=False)
         
