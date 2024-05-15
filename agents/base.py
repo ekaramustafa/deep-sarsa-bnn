@@ -46,6 +46,7 @@ class Agent():
             math.exp(-1. * self.steps_done / self.EPS_DECAY)
         return eps_threshold
     def plot_durations(self,show_result=False):
+        return
         plt.figure(1)
         durations_t = torch.tensor(self.episode_durations, dtype=torch.float)
         if show_result:
@@ -81,5 +82,5 @@ class Agent():
         plt.legend()
         path = f"results/{self.name}"
         plt.savefig(path)
-        plt.show(block=False)
+        #plt.show(block=False)
         

@@ -15,7 +15,7 @@ import multiprocessing as mp
 def train_agent(env_name, agent_class, num_episodes):
     env = gym.make(env_name)
     env = EnvironmentWrapper.wrap_environment(env)
-    agent = agent_class(env, is_deterministic=True, linear_layer_class=AdinVBL, conv_layer_class=AdinVBConv2d)
+    agent = agent_class(env, is_deterministic=True, linear_layer_class=AlterVBL, conv_layer_class=AlterVBConv2d)
     agent.train(num_episodes=num_episodes)
 
 def main():

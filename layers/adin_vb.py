@@ -1,7 +1,8 @@
 import torch
 import torch.nn.functional as F
+#From AdinLab, I don't know how to cite a private repository
 
-# Adin Variational Bayesian Linear Layer
+# Adin Variational Bayesian Linear Layer 
 from layers.vbl_base import VBLinear
 
 class AdinVBL(VBLinear):
