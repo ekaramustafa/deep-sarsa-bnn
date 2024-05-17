@@ -26,8 +26,8 @@ def main():
     np.random.seed(42)
     random.seed(42)
     env = gym.make("TennisNoFrameskip-v4")
-    # perform_param_tests()
-    # perform_other_tests()
+    perform_param_tests()
+    perform_other_tests()
 
 
 def perform_other_tests():

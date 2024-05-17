@@ -99,7 +99,7 @@ class DESAgent(Agent):
                     self.plot_durations()
                     break
             episode_rewards.append(total_reward)
-        print('Complete')
+        print(f'Complete training {self.name}')
         self.plot_durations(show_result=True)
         plt.ioff()
         # plt.show()
