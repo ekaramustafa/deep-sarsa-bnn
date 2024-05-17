@@ -14,13 +14,19 @@ class Agent():
     EPS_DECAY = 1000
     TAU = 0.005
     LR = 1e-4
+    NAME_SUFFIX = ""
     is_ipython = 'inline' in plt.get_backend()
     if is_ipython:
         from IPython import display
     plt.ion()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    def __init__(self, env, is_deterministic):
+    def __init__(self, env, is_deterministic, params=None):
+        if(params is not None):
+            Agent.EPS_START = params.eps_start 
+            Agent.EPS_END = params.eps_end
+            Agent.EPS_DECAY = params.eps_decay
+            Agent.NAME_SUFFIX = params.name
         self.env = env
         self.name = "Base Agent"
         self.memory = ReplayMemory(10000)
@@ -40,6 +46,10 @@ class Agent():
                 return self.policy_net(state).max(1)[1].view(1, 1)
         else:
             return torch.tensor([[self.env.action_space.sample()]], device=Agent.device, dtype=torch.long)
+    
+    def select_max_action(self,state):
+        with torch.no_grad():
+                return self.policy_net(state).max(1)[1].view(1, 1)
         
     def get_eps(self):
         eps_threshold = self.EPS_END + (self.EPS_START - self.EPS_END) * \
@@ -72,15 +82,19 @@ class Agent():
                 display.display(plt.gcf())
 
 
-    def plot_performance(self,episode_rewards):
+    def plot_performance(self,episode_rewards,is_evaluation=False):
         x_axis = np.arange(0,len(episode_rewards))
         plt.plot(x_axis,np.array(episode_rewards),color="r",linestyle="-",marker="o",markersize=1)
-        title = f"{self.name}"
+        title = f"{self.name} {Agent.NAME_SUFFIX}"
+        path = f"results/{self.name}_{Agent.NAME_SUFFIX}"
+        if(is_evaluation):
+            title += "_eval"
+            path += "_eval"
         plt.title(title)
         plt.xlabel("Episode")
         plt.ylabel("Rewards")
         plt.legend()
-        path = f"results/{self.name}"
+        
         plt.savefig(path)
         #plt.show(block=False)
         
