@@ -14,19 +14,27 @@ class Agent():
     EPS_DECAY = 1000
     TAU = 0.005
     LR = 1e-4
-    NAME_SUFFIX = ""
+    NAME_SUFFIX = "" # For saving results of different experiments 
     is_ipython = 'inline' in plt.get_backend()
     if is_ipython:
         from IPython import display
     plt.ion()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    def __init__(self, env, is_deterministic, params=None):
-        if(params is not None):
-            Agent.EPS_START = params.eps_start 
-            Agent.EPS_END = params.eps_end
-            Agent.EPS_DECAY = params.eps_decay
-            Agent.NAME_SUFFIX = params.name
+    def __init__(self, env, is_deterministic, expl_params=None,step_params=None):
+        if(expl_params is not None):
+            Agent.EPS_START = expl_params.eps_start 
+            Agent.EPS_END = expl_params.eps_end
+            Agent.EPS_DECAY = expl_params.eps_decay
+            Agent.NAME_SUFFIX = expl_params.name
+        
+        if(step_params is not None):
+            Agent.BATCH_SIZE = step_params.batch_size
+            Agent.GAMMA = step_params.gamma
+            Agent.TAU = step_params.tau
+            Agent.LR = step_params.lr
+            Agent.NAME_SUFFIX = step_params.name # if both are provided, step_params will overwrite expl_paramss, design choice
+        
         self.env = env
         self.name = "Base Agent"
         self.memory = ReplayMemory(10000)
@@ -86,7 +94,7 @@ class Agent():
         x_axis = np.arange(0,len(episode_rewards))
         plt.plot(x_axis,np.array(episode_rewards),color="r",linestyle="-",marker="o",markersize=1)
         title = f"{self.name} {Agent.NAME_SUFFIX}"
-        path = f"results/{self.name}_{Agent.NAME_SUFFIX}"
+        path = f"results/{self.env.spec.id}/{self.name}_{Agent.NAME_SUFFIX}"
         if(is_evaluation):
             title += "_eval"
             path += "_eval"
