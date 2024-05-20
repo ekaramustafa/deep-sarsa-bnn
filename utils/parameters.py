@@ -18,4 +18,4 @@ class StepParameters(Parameters):
         self.gamma = gamma
         self.tau = tau
         self.lr = lr
-        self.batch_size = self.batch_size
+        self.batch_size = batch_size

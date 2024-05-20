@@ -1,3 +1,4 @@
+import os
 import math
 import random
 import torch
@@ -95,9 +96,13 @@ class Agent():
         plt.plot(x_axis,np.array(episode_rewards),color="r",linestyle="-",marker="o",markersize=1)
         title = f"{self.name} {Agent.NAME_SUFFIX}"
         path = f"results/{self.env.spec.id}/{self.name}_{Agent.NAME_SUFFIX}"
+        
         if(is_evaluation):
             title += "_eval"
             path += "_eval"
+
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+
         plt.title(title)
         plt.xlabel("Episode")
         plt.ylabel("Rewards")

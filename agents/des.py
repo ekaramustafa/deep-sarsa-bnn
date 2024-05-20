@@ -14,7 +14,7 @@ import numpy as np
 class DESAgent(Agent):
 
     def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None,expl_params=None,step_params=None):
-        super(DESAgent, self).__init__(env=env,is_deterministic=is_deterministic,expl_params=expl_params)
+        super(DESAgent, self).__init__(env=env,is_deterministic=is_deterministic,expl_params=expl_params,step_params=step_params)
         self.name = "Deep Expected Sarsa Agent"
         self.init_message()
         if(is_deterministic):

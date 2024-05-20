@@ -13,8 +13,8 @@ import numpy as np
 
 class DSAgent(Agent):
 
-    def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None):
-        super(DSAgent, self).__init__(env,is_deterministic=is_deterministic)
+    def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None,expl_params=None,step_params=None):
+        super(DSAgent, self).__init__(env,is_deterministic=is_deterministic,expl_params=expl_params,step_params=step_params)
         self.name = "Deep Sarsa Agent"
         self.init_message()
         if(is_deterministic):

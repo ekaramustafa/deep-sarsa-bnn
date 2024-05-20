@@ -14,10 +14,10 @@ import multiprocessing as mp
 
 num_episodes = 500
 
-def train_agent(env_name, agent_class, num_episodes,expl_params=None,step_params=None):
+def train_agent(env_name, agent_class, num_episodes,expl_params=None,step_param=None):
     env = gym.make(env_name)
     env = EnvironmentWrapper.wrap_environment(env)
-    agent = agent_class(env, is_deterministic=False, linear_layer_class=AdinVBL, conv_layer_class=AdinVBConv2d,expl_params=expl_params,step_params=step_params)
+    agent = agent_class(env, is_deterministic=False, linear_layer_class=AdinVBL, conv_layer_class=AdinVBConv2d,expl_params=expl_params,step_params=step_param)
     agent.train(num_episodes=num_episodes)
     agent.evaluate(num_episodes=num_episodes)
 
@@ -25,20 +25,22 @@ def main():
     torch.manual_seed(42)
     np.random.seed(42)
     random.seed(42)
-    # perform_other_envs()
     perform_step_tests()
+    perform_other_envs()
 
 
 def perform_other_envs():
     processes = []
-    environments = ["BreakoutNoFrameskip-v4","SpaceInvadersNoFrameskip-v4","TennisNoFrameskip-v4"]
+    environments = ["BreakoutNoFrameskip-v4","SpaceInvadersNoFrameskip-v4"]  # "TennisNoFrameskip-v4" 
+    expl_param = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="")#Moderate Exploration with Slower Decay
     for idx,environment in enumerate(environments):
-        process = mp.Process(target=train_agent, args=(environments[idx], DSAgent, num_episodes))
-        process.start()
-        processes.append(process)
+        for agent_class in [DESAgent, DSAgent]:
+            process = mp.Process(target=train_agent, args=(environment, agent_class, num_episodes,expl_param,None))
+            process.start()
+            processes.append(process)
 
-    for process in processes:
-        process.join()
+        for process in processes:
+            process.join()
 
 
 def perform_param_tests():
@@ -58,8 +60,8 @@ def perform_step_tests():
     processes = []
     agent_classes = [DESAgent] 
     step_params = get_step_parameters_cfg()
-    expl_param = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="long_moderate_expl")#Moderate Exploration with Slower Decay
-    for idx,step_param in enumerate(step_params):
+    expl_param = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="")#Moderate Exploration with Slower Decay
+    for step_param in step_params:
         process = mp.Process(target=train_agent, args=("BreakoutNoFrameskip-v4", agent_classes[0], num_episodes,expl_param,step_param))
         process.start()
         processes.append(process)
