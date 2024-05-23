@@ -8,11 +8,11 @@ from utils.replay_memory import ReplayMemory
 from networks.base import QNetwork
 
 class Agent():
-    BATCH_SIZE = 128
+    BATCH_SIZE = 4096
     GAMMA = 0.99
-    EPS_START = 0.9
-    EPS_END = 0.05
-    EPS_DECAY = 1000
+    EPS_START = 0.7
+    EPS_END = 0.1
+    EPS_DECAY = 2000
     TAU = 0.005
     LR = 1e-4
     NAME_SUFFIX = "" # For saving results of different experiments 
@@ -92,6 +92,8 @@ class Agent():
 
 
     def plot_performance(self,episode_rewards,is_evaluation=False):
+        plt.clf()
+        plt.ioff()
         x_axis = np.arange(0,len(episode_rewards))
         plt.plot(x_axis,np.array(episode_rewards),color="r",linestyle="-",marker="o",markersize=1)
         title = f"{self.name} {Agent.NAME_SUFFIX}"

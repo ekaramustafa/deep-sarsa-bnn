@@ -72,7 +72,6 @@ class DSAgent(Agent):
         self.optimizer.step()
     
     def train(self,num_episodes=100):
-        plt.ion()
         episode_rewards = []
         for i_episode in range(num_episodes):
             # Initialize the environment and get its state
@@ -99,18 +98,15 @@ class DSAgent(Agent):
 
                 if done:
                     self.episode_durations.append(t + 1)
-                    self.plot_durations()
+                    # self.plot_durations()
                     break
             episode_rewards.append(total_reward)
         print(f'Complete training {self.name} {self.NAME_SUFFIX}')
-        self.plot_durations(show_result=True)
-        plt.ioff()
-        plt.show()
+        # self.plot_durations(show_result=True)
         self.plot_performance(episode_rewards)
 
     def evaluate(self,num_episodes):
         self.policy_net.eval()
-        plt.ion()
         episode_rewards = []
         for i_episode in range(num_episodes):
             # Initialize the environment and get its state
@@ -131,12 +127,9 @@ class DSAgent(Agent):
 
                 if done:
                     self.episode_durations.append(t + 1)
-                    self.plot_durations()
+                    # self.plot_durations()
                     break
             episode_rewards.append(total_reward)
         print(f'Complete evaluation {self.name} {self.NAME_SUFFIX}')
-        #self.plot_durations(show_result=True)
-        plt.ioff()
-        # plt.show()
         self.plot_performance(episode_rewards,is_evaluation=True)
     

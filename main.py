@@ -8,6 +8,7 @@ from layers.alter_vb import AlterVBL, AlterVBConv2d
 from agents.dql import DQLAgent
 from agents.des import DESAgent
 from agents.ds import DSAgent
+from agents.ddes import DDESAgent
 import torch 
 
 import multiprocessing as mp
@@ -25,49 +26,47 @@ def main():
     torch.manual_seed(42)
     np.random.seed(42)
     random.seed(42)
-    perform_step_tests()
-    perform_other_envs()
+    perform_envs_des()
+    # test_for_dqls()   
 
 
-def perform_other_envs():
+def test_for_dqls():
+    print()
+    print("=====================================")
+    print("TEST FOR DQL STARTS")
+    print()
+    print("  BreakoutNoFrameskip-v4 DQL_AGENT") 
+    train_agent("BreakoutNoFrameskip-v4",DQLAgent,num_episodes,None,None)
+    print()
+    print("  SpaceInvadersNoFrameskip-v4 DQL_AGENT")
+    train_agent("SpaceInvadersNoFrameskip-v4",DQLAgent,num_episodes,None,None)
+    print()
+    print("  TennisNoFrameskip-v4 DQL_AGENT")
+    train_agent("TennisNoFrameskip-v4",DQLAgent,num_episodes,None,None)
+    print()
+    print("=====================================")
+    print()
+
+def test_for_overestimation():
+    
+    print()
+    print("=====================================")
+    print("TEST FOR OVERESTIMATION STARTS")
+    print("  SpaceInvadersNoFrameskip-v4 DDESAgent")
+    train_agent("SpaceInvadersNoFrameskip-v4",DDESAgent,num_episodes,None,None)
+    print()
+    print("   BreakoutNoFrameskip-v4- DDESAgent")
+    train_agent("BreakoutNoFrameskip-v4",DDESAgent,num_episodes,None,None)
+    print("=====================================")
+    print()
+
+def perform_envs_des():
     processes = []
-    environments = ["BreakoutNoFrameskip-v4","SpaceInvadersNoFrameskip-v4"]  # "TennisNoFrameskip-v4" 
-    expl_param = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="")#Moderate Exploration with Slower Decay
+    environments = ["TennisNoFrameskip-v4"]
     for idx,environment in enumerate(environments):
-        for agent_class in [DESAgent, DSAgent]:
-            process = mp.Process(target=train_agent, args=(environment, agent_class, num_episodes,expl_param,None))
-            process.start()
-            processes.append(process)
+        for agent_class in [DESAgent, DSAgent, DDESAgent]:
+            train_agent(environment, agent_class, num_episodes,None,None)
 
-        for process in processes:
-            process.join()
-
-
-def perform_param_tests():
-    processes = []
-    agent_classes = [DESAgent] 
-    expl_params = get_exp_parameters_cfg()
-    for idx,expl_param in enumerate(expl_params):
-        process = mp.Process(target=train_agent, args=("BreakoutNoFrameskip-v4", agent_classes[0], num_episodes,expl_param))
-        process.start()
-        processes.append(process)
-
-    for process in processes:
-        process.join()
-
-
-def perform_step_tests():
-    processes = []
-    agent_classes = [DESAgent] 
-    step_params = get_step_parameters_cfg()
-    expl_param = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="")#Moderate Exploration with Slower Decay
-    for step_param in step_params:
-        process = mp.Process(target=train_agent, args=("BreakoutNoFrameskip-v4", agent_classes[0], num_episodes,expl_param,step_param))
-        process.start()
-        processes.append(process)
-
-    for process in processes:
-        process.join()
 
 def get_exp_parameters_cfg():
     param1 = ExplorationParameters(eps_start=0.9,eps_end=0.1,eps_decay=1500,name="long_high_expl")# High and Long exploration
@@ -86,11 +85,11 @@ def get_step_parameters_cfg():
     gamma = 0.99
     tau = 0.005
     lr = 1e-4
-    param1 = StepParameters(batch_size=batch_sizes[0],gamma=gamma,tau=tau,lr=lr,name="batch_512")
-    param2 = StepParameters(batch_size=batch_sizes[1],gamma=gamma,tau=tau,lr=lr,name="batch_1024")
+    #param1 = StepParameters(batch_size=batch_sizes[0],gamma=gamma,tau=tau,lr=lr,name="batch_512")
+    #param2 = StepParameters(batch_size=batch_sizes[1],gamma=gamma,tau=tau,lr=lr,name="batch_1024")
     param3 = StepParameters(batch_size=batch_sizes[2],gamma=gamma,tau=tau,lr=lr,name="batch_2048")
     param4 = StepParameters(batch_size=batch_sizes[3],gamma=gamma,tau=tau,lr=lr,name="batch_4096")
-    return [param1,param2,param3,param4]
+    return [param3,param4]
 
 if __name__ == '__main__':
     main()

@@ -10,8 +10,8 @@ from utils.transition import Transition
 
 class DQLAgent(Agent):
 
-    def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None):
-        super(DQLAgent, self).__init__(env,is_deterministic=is_deterministic)
+    def __init__(self, env, is_deterministic, linear_layer_class=None, conv_layer_class=None,expl_params=None,step_params=None):
+        super(DQLAgent, self).__init__(env,is_deterministic=is_deterministic,expl_params=expl_params,step_params=step_params)
         self.name = "DQL Agent"
         self.init_message()
         if(is_deterministic):
@@ -62,7 +62,6 @@ class DQLAgent(Agent):
         self.optimizer.step()
     
     def train(self,num_episodes=100):
-        plt.ion()
         episode_rewards = []
         for i_episode in range(num_episodes):
             # Initialize the environment and get its state
@@ -96,15 +95,38 @@ class DQLAgent(Agent):
 
                 if done:
                     self.episode_durations.append(t + 1)
-                    self.plot_durations()
+                    # self.plot_durations()
                     break
             episode_rewards.append(total_reward)
-        print('Complete')
-        self.plot_durations(show_result=True)
-        plt.ioff()
-        plt.show()
+        print(f'Complete training {self.name} {self.NAME_SUFFIX}')
         self.plot_performance(episode_rewards)
 
-    def evaluate(self):
-        pass
+    def evaluate(self,num_episodes):
+        self.policy_net.eval()
+        self.target_net.eval()
+        episode_rewards = []
+        for i_episode in range(num_episodes):
+            # Initialize the environment and get its state
+            state, info = self.env.reset()
+            state = torch.tensor(state, dtype=torch.float32, device=Agent.device).unsqueeze(0)
+            total_reward = 0
+            for t in count():
+                action = self.select_max_action(state)
+                observation, reward, terminated, truncated, _ = self.env.step(action.item())
+                total_reward += reward
+                done = terminated or truncated
+                if done:
+                    next_state = None
+                else:
+                    next_state = torch.tensor(observation, dtype=torch.float32, device=Agent.device).unsqueeze(0)
+
+                state = next_state
+
+                if done:
+                    self.episode_durations.append(t + 1)
+                    # self.plot_durations()
+                    break
+            episode_rewards.append(total_reward)
+        print(f'Complete evaluation {self.name} {self.NAME_SUFFIX}')
+        self.plot_performance(episode_rewards,is_evaluation=True)
     
