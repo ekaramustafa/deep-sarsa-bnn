@@ -27,7 +27,7 @@ def main():
     np.random.seed(42)
     random.seed(42)
     perform_envs_des()
-    # test_for_dqls()   
+    test_for_dqls()   
 
 
 def test_for_dqls():
@@ -35,14 +35,14 @@ def test_for_dqls():
     print("=====================================")
     print("TEST FOR DQL STARTS")
     print()
-    print("  BreakoutNoFrameskip-v4 DQL_AGENT") 
-    train_agent("BreakoutNoFrameskip-v4",DQLAgent,num_episodes,None,None)
+    # print("  BreakoutNoFrameskip-v4 DQL_AGENT") 
+    # train_agent("BreakoutNoFrameskip-v4",DQLAgent,num_episodes,None,None)
     print()
-    print("  SpaceInvadersNoFrameskip-v4 DQL_AGENT")
-    train_agent("SpaceInvadersNoFrameskip-v4",DQLAgent,num_episodes,None,None)
+    print("  PongNoFrameskip-v4 DQL_AGENT")
+    train_agent("PongNoFrameskip-v4",DQLAgent,num_episodes,None,None)
     print()
-    print("  TennisNoFrameskip-v4 DQL_AGENT")
-    train_agent("TennisNoFrameskip-v4",DQLAgent,num_episodes,None,None)
+    # print("  TennisNoFrameskip-v4 DQL_AGENT")
+    # train_agent("TennisNoFrameskip-v4",DQLAgent,num_episodes,None,None)
     print()
     print("=====================================")
     print()
@@ -62,9 +62,9 @@ def test_for_overestimation():
 
 def perform_envs_des():
     processes = []
-    environments = ["TennisNoFrameskip-v4"]
+    environments = ["PongNoFrameskip-v4", "BreakoutNoFrameskip-v4", "SpaceInvadersNoFrameskip-v4"]
     for idx,environment in enumerate(environments):
-        for agent_class in [DESAgent, DSAgent, DDESAgent]:
+        for agent_class in [DDESAgent, DSAgent, DESAgent]:
             train_agent(environment, agent_class, num_episodes,None,None)
 
 
@@ -72,11 +72,7 @@ def get_exp_parameters_cfg():
     param1 = ExplorationParameters(eps_start=0.9,eps_end=0.1,eps_decay=1500,name="long_high_expl")# High and Long exploration
     param2 = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="long_moderate_expl")#Moderate Exploration with Slower Decay
     param3 = ExplorationParameters(eps_start=0.9,eps_end=0.1,eps_decay=500, name="short_high_expl") # High and Short Exploration
-    # param4 = Parameters(eps_start=0.7, eps_end=0.1, eps_decay=500, name="short_moderate_expl") # Moderate and Short Exploration
-    # Note for report that param4 performed very poorly
-
-    #    param2 = ExplorationParameters(eps_start=0.7,eps_end=0.1,eps_decay=2000,name="long_moderate_expl")#Moderate Exploration with Slower Decay
-    #    is the best one so far
+    param4 = ExplorationParameters(eps_start=0.7, eps_end=0.1, eps_decay=500, name="short_moderate_expl") # Moderate and Short Exploration
     return [param1,param2,param3]
 
 
@@ -85,11 +81,11 @@ def get_step_parameters_cfg():
     gamma = 0.99
     tau = 0.005
     lr = 1e-4
-    #param1 = StepParameters(batch_size=batch_sizes[0],gamma=gamma,tau=tau,lr=lr,name="batch_512")
-    #param2 = StepParameters(batch_size=batch_sizes[1],gamma=gamma,tau=tau,lr=lr,name="batch_1024")
+    param1 = StepParameters(batch_size=batch_sizes[0],gamma=gamma,tau=tau,lr=lr,name="batch_512")
+    param2 = StepParameters(batch_size=batch_sizes[1],gamma=gamma,tau=tau,lr=lr,name="batch_1024")
     param3 = StepParameters(batch_size=batch_sizes[2],gamma=gamma,tau=tau,lr=lr,name="batch_2048")
     param4 = StepParameters(batch_size=batch_sizes[3],gamma=gamma,tau=tau,lr=lr,name="batch_4096")
-    return [param3,param4]
+    return [param1,param2,param3,param4]
 
 if __name__ == '__main__':
     main()
